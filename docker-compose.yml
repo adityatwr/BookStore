@@ -1,0 +1,67 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+     test: ["CMD", "rabbitmq-diagnostics", "ping"]
+     interval: 10s
+     timeout: 5s
+     retries: 4
+    restart: unless-stopped
+
+  book-catalogue:
+    build:
+      context: .
+      dockerfile: ./services/BookCatalogueService/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      RABBITMQ__HOST: rabbitmq
+      RABBITMQ__PORT: "5672"
+      RABBITMQ__USER: guest
+      RABBITMQ__PASS: guest
+      ASPNETCORE_ENVIRONMENT: Development
+      SWAGGER__ENABLED: "true"   
+    ports:
+      - "7001:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+      
+
+  order-service:
+    build:
+      context: .
+      dockerfile: ./services/OrderService/Dockerfile
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      RABBITMQ__HOST: rabbitmq
+      RABBITMQ__PORT: "5672"
+      RABBITMQ__USER: guest
+      RABBITMQ__PASS: guest
+      BOOKS_BASE_URL: http://book-catalogue:8080
+      ASPNETCORE_ENVIRONMENT: Development
+      SWAGGER__ENABLED: "true"   
+    ports:
+      - "7002:8080"
+    depends_on: 
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped
+
+  auditing-service:
+    build:
+      context: .
+      dockerfile: ./services/AuditService/Dockerfile
+    environment:
+      RABBITMQ__HOST: rabbitmq
+      RABBITMQ__USER: guest
+      RABBITMQ__PASS: guest
+      ASPNETCORE_ENVIRONMENT: Development
+      SWAGGER__ENABLED: "true"   
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: unless-stopped

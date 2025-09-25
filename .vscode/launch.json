@@ -1,0 +1,53 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "BookCatalogueService",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/services/BookCatalogueService/BookCatalogueService.csproj",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RABBITMQ__HOST": "localhost",
+        "RABBITMQ__USER": "guest",
+        "RABBITMQ__PASS": "guest"
+      },
+      "args": ["--urls", "http://localhost:5001"]
+    },
+    {
+      "name": "OrderService",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/services/OrderService/OrderService.csproj",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RABBITMQ__HOST": "localhost",
+        "RABBITMQ__USER": "guest",
+        "RABBITMQ__PASS": "guest",
+        "BOOKS_BASE_URL": "http://localhost:5001"
+      },
+      "args": ["--urls", "http://localhost:5002"]
+    },
+    {
+      "name": "AuditService (worker)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/services/AuditService/AuditService.csproj",
+      "env": {
+        "RABBITMQ__HOST": "localhost",
+        "RABBITMQ__USER": "guest",
+        "RABBITMQ__PASS": "guest"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Run All Services (local)",
+      "configurations": [
+        "BookCatalogueService",
+        "OrderService",
+        "AuditService (worker)"
+      ]
+    }
+  ]
+}

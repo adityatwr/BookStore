@@ -1,0 +1,12 @@
+﻿{
+  "profiles": {
+    "AuditService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "RABBITMQ__HOST": "localhost",
+        "RABBITMQ__USER": "guest",
+        "RABBITMQ__PASS": "guest"
+      }
+    }
+  }
+}

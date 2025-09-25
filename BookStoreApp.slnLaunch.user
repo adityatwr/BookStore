@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "services\\BookCatalogueService\\BookCatalogueService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "services\\OrderService\\OrderService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "services\\AuditService\\AuditService.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,22 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/BMW2
+/.vs/BookStoreApp
+/.vs/ProjectEvaluation
+/.vs
+/Canonicals/bin/Debug/net9.0
+/Canonicals/obj/Debug/net9.0
+/Canonicals/obj/Release/net9.0
+/Canonicals/obj
+/services/AuditService/bin/Debug/net9.0
+/services/AuditService/obj
+/services/BookCatalogueService/bin/Debug/net9.0
+/services/BookCatalogueService/obj/Debug/net9.0
+/services/BookCatalogueService/obj/Release/net9.0
+/services/BookCatalogueService/obj
+/services/OrderService/bin/Debug/net9.0
+/services/OrderService/obj/Debug/net9.0
+/services/OrderService/obj/Release/net9.0
+/services/OrderService/obj

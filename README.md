@@ -13,30 +13,6 @@ A minimal **microservices** built with **C#/.NET**, designed to be clean, testab
 
 ---
 
-## Architecture
-
-```mermaid
-flowchart LR
-  Client[API Client / Browser\nSwagger, Postman]:::ext -->|HTTP :7001| BookAPI[Book Catalogue API]
-  Client -->|HTTP :7002| OrderAPI[Order Service API]
-
-  subgraph Net["Docker network (compose)\nDNS: book-catalogue, order-service, rabbitmq"]
-    BookAPI:::svc --> BookRepo[(Book Repository\nIn-memory ➜ EF Core)]:::db
-    OrderAPI:::svc --> OrderRepo[(Order Repository\nIn-memory ➜ EF Core)]:::db
-    AuditSvc[Auditing Service\n.NET Worker]:::svc
-    Rabbit[(RabbitMQ Broker\nAMQP 5672 | Mgmt 15672)]:::mq
-  end
-
-  OrderAPI -- "GET /books/{id}\n(typed HttpClient)" --> BookAPI
-  BookAPI -- "Publish BookAdded" --> Rabbit
-  OrderAPI -- "Publish OrderPlaced" --> Rabbit
-  AuditSvc -- "Consume both events" --> Rabbit
-
-  classDef svc fill:#eef7ff,stroke:#3b82f6,stroke-width:1px,color:#0b3b8f;
-  classDef db fill:#fff7e6,stroke:#f59e0b,stroke-width:1px;
-  classDef mq fill:#fce7f3,stroke:#db2777,stroke-width:1px;
-  classDef ext fill:#e5e7eb,stroke:#6b7280,color:#111827;
-```
 
 ## Tech Stack
 

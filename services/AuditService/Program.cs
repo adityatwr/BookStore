@@ -1,4 +1,5 @@
 using AuditService;
+using AuditService.Consumers;
 using MassTransit;
 
 var builder = Host.CreateApplicationBuilder(args);
@@ -11,7 +12,8 @@ builder.Services.AddMassTransit(x =>
     var rabbitUser = builder.Configuration["RABBITMQ__USER"] ?? "guest";
     var rabbitPass = builder.Configuration["RABBITMQ__PASS"] ?? "guest";
 
-    x.AddConsumer<AuditConsumer>();
+    x.AddConsumer<BookAddedConsumer>();
+    x.AddConsumer<OrderPlacedConsumer>();
 
     x.UsingRabbitMq((ctx, cfg) =>
     {
@@ -23,12 +25,11 @@ builder.Services.AddMassTransit(x =>
 
         cfg.ReceiveEndpoint("Audit", e =>
         {
-            e.ConfigureConsumer<AuditConsumer>(ctx);
+            e.ConfigureConsumer<BookAddedConsumer>(ctx);
+            e.ConfigureConsumer<OrderPlacedConsumer>(ctx);
         });
     });
 });
-
-//builder.Services.AddHostedService<Worker>();
 
 var host = builder.Build();
 host.Run();
